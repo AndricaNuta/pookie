@@ -173,7 +173,7 @@ export default function DogRun() {
         {status === 'dead' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 grid place-items-center px-6" style={{ background: 'rgba(255,255,255,0.78)' }}>
             <div>
-              <div className="fred text-[22px] mb-1" style={{ color: '#d63e6e' }}>he ate it AGAIN 🙄</div>
+              <div className="fred text-[22px] mb-1" style={{ color: '#d63e6e' }}>{CONFIG.dogName || 'He'} ate it AGAIN 🙄</div>
               <div className="fred text-[15px]" style={{ color: '#4a2f5e', opacity: 0.7 }}>tap to try again</div>
             </div>
           </motion.div>

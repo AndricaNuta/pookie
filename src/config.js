@@ -6,7 +6,7 @@ export const CONFIG = {
   name: 'Alex',          // shown big on the opening
   yourName: 'Pookie',    // your sign-off
   passenger: 'Pookie boy', // shown on the boarding pass
-  dogName: '', // his dog's name (for the dog game). Leave '' to just say "he".
+  dogName: 'Olly', // his dog's name (for the dog game). Leave '' to just say "he".
 
   // Scene "The lock": a 4-digit date that means something (format DDMM).
   // 2810 = 28 October. Change if you want a different meaningful date.

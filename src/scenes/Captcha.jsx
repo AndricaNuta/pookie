@@ -39,7 +39,7 @@ export default function Captcha() {
       popper({ x: 0.5, y: 0.35 })
       setTimeout(next, 1500)
     } else if (dogSelected) {
-      setMsg('Hmmm… I think there’s an intruder. 🕵️ That’s the dog in a cat costume — nice try.')
+      setMsg('Hmmm… I think there’s an intruder.')
     } else {
       setMsg(noneSelected ? 'Bold strategy. Select the cat. 🐱' : 'Hmm. A robot would’ve nailed that. Try again 🤨')
     }
@@ -117,7 +117,7 @@ export default function Captcha() {
       </div>
 
       <motion.p key={msg + String(verified)} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="fred text-[17px] min-h-[1.6em]" style={{ color: verified ? '#2bc4a8' : '#d63e6e' }}>
-        {verified ? 'Verified ✅ (Obviously. You’d know that face anywhere.)' : msg}
+        {verified ? 'Verified ✅' : msg}
       </motion.p>
     </div>
   )
