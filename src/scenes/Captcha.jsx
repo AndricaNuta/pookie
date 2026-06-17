@@ -8,7 +8,7 @@ import { popper } from '../lib/confetti.js'
 function buildTiles() {
   const tiles = [
     ...CAPTCHA.tuti.map((src, i) => ({ key: `t${i}`, isTuti: true, src })),
-    ...CAPTCHA.decoys.map((d, i) => ({ key: `d${i}`, isTuti: false, src: d.src, emoji: d.emoji })),
+    ...CAPTCHA.decoys.map((d, i) => ({ key: `d${i}`, isTuti: false, src: d.src, emoji: d.emoji, isDog: !!(d.src && d.src.includes('dog')) })),
   ]
   for (let i = tiles.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -33,10 +33,13 @@ export default function Captcha() {
   const verify = () => {
     const ok = tiles.every((t) => Boolean(sel[t.key]) === t.isTuti)
     const noneSelected = !Object.values(sel).some(Boolean)
+    const dogSelected = tiles.some((t) => t.isDog && sel[t.key])
     if (ok) {
       setVerified(true)
       popper({ x: 0.5, y: 0.35 })
       setTimeout(next, 1500)
+    } else if (dogSelected) {
+      setMsg('Hmmm… I think there’s an intruder. 🕵️ That’s the dog in a cat costume — nice try.')
     } else {
       setMsg(noneSelected ? 'Bold strategy. Select the cat. 🐱' : 'Hmm. A robot would’ve nailed that. Try again 🤨')
     }
@@ -76,6 +79,24 @@ export default function Captcha() {
                   <div className="absolute top-1 left-1 w-6 h-6 rounded-full grid place-items-center text-white text-[14px]" style={{ background: '#4a8cff' }}>
                     ✓
                   </div>
+                )}
+                {on && t.isDog && (
+                  <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full pointer-events-none">
+                    {/* cat ears */}
+                    <path d="M16 34 L24 4 L42 28 Z" fill="#f7c8d6" stroke="#4a2f5e" strokeWidth="2.5" strokeLinejoin="round" />
+                    <path d="M84 34 L76 4 L58 28 Z" fill="#f7c8d6" stroke="#4a2f5e" strokeWidth="2.5" strokeLinejoin="round" />
+                    {/* whiskers */}
+                    <g stroke="#fff" strokeWidth="2.4" strokeLinecap="round" style={{ filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.4))' }}>
+                      <line x1="47" y1="60" x2="14" y2="52" />
+                      <line x1="47" y1="65" x2="12" y2="65" />
+                      <line x1="47" y1="70" x2="14" y2="78" />
+                      <line x1="53" y1="60" x2="86" y2="52" />
+                      <line x1="53" y1="65" x2="88" y2="65" />
+                      <line x1="53" y1="70" x2="86" y2="78" />
+                    </g>
+                    {/* lil pink nose */}
+                    <path d="M44 60 L56 60 L50 67 Z" fill="#e87a98" stroke="#4a2f5e" strokeWidth="1.6" strokeLinejoin="round" />
+                  </svg>
                 )}
               </button>
             )

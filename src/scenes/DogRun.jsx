@@ -61,7 +61,7 @@ export default function DogRun() {
     const step = (t) => {
       const dt = Math.min(0.045, (t - last) / 1000)
       last = t
-      const speed = 230 + sc * 14
+      const speed = 270 + sc * 20
 
       // dog physics
       const d = dog.current
@@ -70,7 +70,7 @@ export default function DogRun() {
       if (d.y <= 0) { d.y = 0; d.vy = 0 }
 
       // spawn
-      if (t - lastSpawn.current > 1250 - Math.min(400, sc * 50)) {
+      if (t - lastSpawn.current > 1050 - Math.min(440, sc * 60)) {
         lastSpawn.current = t
         obs.current.push({ id: idc.current++, x: w + 20, e: FOODS[(idc.current * 7) % FOODS.length], scored: false })
       }
