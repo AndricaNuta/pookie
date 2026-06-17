@@ -5,7 +5,8 @@ import { CONFIG } from '../config.js'
 import { party } from '../lib/confetti.js'
 
 const TARGET = 6
-const FOODS = ['🍖', '🦴', '🍕', '🧀', '🍗', '🥓', '🍔']
+const FOODS = ['🍖', '🦴', '🍕', '🧀', '🍗', '🥓', '🍔'] // ground — jump OVER
+const FLYERS = ['🐦', '🦋', '🐝', '🥏'] // air — do NOT jump (Olly leaps up and grabs them)
 const DOG_X = 54
 const DOG = 56
 const GROUND = 46 // height of the grass strip
@@ -69,10 +70,14 @@ export default function DogRun() {
       d.y += d.vy * dt
       if (d.y <= 0) { d.y = 0; d.vy = 0 }
 
-      // spawn
+      // spawn (first two are ground, to teach the jump; then mix in fliers)
       if (t - lastSpawn.current > 1050 - Math.min(440, sc * 60)) {
         lastSpawn.current = t
-        obs.current.push({ id: idc.current++, x: w + 20, e: FOODS[(idc.current * 7) % FOODS.length], scored: false })
+        const isAir = idc.current >= 2 && Math.random() < 0.34
+        const e = isAir
+          ? FLYERS[Math.floor(Math.random() * FLYERS.length)]
+          : FOODS[Math.floor(Math.random() * FOODS.length)]
+        obs.current.push({ id: idc.current++, x: w + 20, e, type: isAir ? 'air' : 'ground', scored: false })
       }
 
       // move + collide + score
@@ -84,9 +89,11 @@ export default function DogRun() {
           setScore(sc)
           if (sc >= TARGET) won = true
         }
-        // collision: food at ground, dog must be high enough
         const overlap = o.x < DOG_X + DOG * 0.5 && o.x + 30 > DOG_X - DOG * 0.4
-        if (overlap && d.y < 26) dead = true
+        if (overlap) {
+          // ground: must jump (be high). air: must stay down (not jumping).
+          if (o.type === 'air' ? d.y > 36 : d.y < 26) dead = true
+        }
       }
       obs.current = obs.current.filter((o) => o.x > -50)
 
@@ -111,7 +118,7 @@ export default function DogRun() {
     <div className="w-full max-w-[440px] mx-auto flex flex-col items-center gap-4 text-center">
       <h2 className="display" style={{ fontSize: 'clamp(24px, 6.5vw, 34px)', color: 'var(--ink)' }}>Jump the snacks! 🦴</h2>
       <p className="fred text-[15px] max-w-[26em]" style={{ color: 'var(--ink)', opacity: 0.7 }}>
-        {CONFIG.dogName ? `${CONFIG.dogName}'s` : 'He’s'} not allowed table scraps. {him === 'he' ? 'He' : him} does NOT care. Tap to hop over the food.
+        {CONFIG.dogName ? `${CONFIG.dogName}'s` : 'He’s'} not allowed table scraps. {him === 'he' ? 'He' : him} does NOT care. Hop the food 🦴 — but don’t jump at the birds! 🐦
       </p>
 
       <div
@@ -159,7 +166,7 @@ export default function DogRun() {
 
         {/* food obstacles */}
         {obs.current.map((o) => (
-          <div key={o.id} className="absolute text-[30px]" style={{ left: o.x, bottom: GROUND - 10 }}>
+          <div key={o.id} className="absolute text-[30px]" style={{ left: o.x, bottom: o.type === 'air' ? GROUND + 92 : GROUND - 10 }}>
             {o.e}
           </div>
         ))}
@@ -190,7 +197,7 @@ export default function DogRun() {
           treat earned →
         </motion.button>
       ) : (
-        <p className="fred text-[14px]" style={{ color: 'var(--ink)', opacity: 0.5 }}>dodge {TARGET} snacks to win</p>
+        <p className="fred text-[14px]" style={{ color: 'var(--ink)', opacity: 0.5 }}>get past {TARGET} to win</p>
       )}
     </div>
   )
