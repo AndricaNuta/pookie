@@ -43,7 +43,7 @@ export const DESTINATIONS = [
     place: 'Croatia',
     tag: 'Old stone walls and the bluest Adriatic.',
     correct: true,
-    win: 'It was always going to be this one. I already booked it — but it’s sweeter when you choose it.',
+    win: 'Dubrovnik — that was my pick 😏 Nothing’s booked yet, so there’s still room to negotiate. But let me show you why…',
     tint: 'linear-gradient(160deg,#2E96D4,#0e3f63)',
   },
   {

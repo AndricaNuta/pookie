@@ -18,7 +18,7 @@ export default function Choice() {
       setWon(true)
       setMessage(d.win)
       popper({ x: 0.5, y: 0.5 })
-      setTimeout(next, 1900)
+      setTimeout(next, 3000)
     } else {
       if (!wrong.includes(d.id)) setWrong((w) => [...w, d.id])
       setMessage(d.bounce)

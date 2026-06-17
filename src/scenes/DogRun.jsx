@@ -4,7 +4,7 @@ import { useExperience } from '../experience.js'
 import { CONFIG } from '../config.js'
 import { party } from '../lib/confetti.js'
 
-const TARGET = 6
+const TARGET = 10
 const FOODS = ['🍖', '🦴', '🍕', '🧀', '🍗', '🥓', '🍔'] // ground — jump OVER
 const FLYERS = ['🐦', '🦋', '🐝', '🥏'] // air — do NOT jump (Olly leaps up and grabs them)
 const DOG_X = 54
